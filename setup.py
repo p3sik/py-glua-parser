@@ -1,21 +1,21 @@
 from setuptools import setup
-import luaparser
+import gluaparser
 
 
 with open('README.rst') as file:
     long_description = file.read()
 
 setup(
-    name='luaparser',
-    version=luaparser.__version__,
-    description='A lua parser in Python',
+    name='gluaparser',
+    version=gluaparser.__version__,
+    description='A GLua parser in Python',
     long_description=long_description,
-    url='https://github.com/boolangery/py-lua-parser',
-    download_url='https://github.com/boolangery/py-lua-parser/archive/' + luaparser.__version__ + '.tar.gz',
+    url='https://github.com/p3sik/py-lua-parser',
+    download_url='https://github.com/p3sik/py-lua-parser/archive/' + gluaparser.__version__ + '.tar.gz',
     author='Eliott Dumeix',
     author_email='eliott.dumeix@gmail.com',
     license='MIT',
-    packages=['luaparser', 'luaparser.parser', 'luaparser.utils', 'luaparser.tests'],
+    packages=['gluaparser', 'gluaparser.parser', 'gluaparser.utils', 'gluaparser.tests'],
     zip_safe=False,
     classifiers=[
         "Intended Audience :: Developers",
@@ -29,7 +29,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'luaparser = luaparser.__main__:main'
+            'gluaparser = luaparser.__main__:main'
         ]
     }
 )

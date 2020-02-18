@@ -5,8 +5,8 @@
     Contains utilities to render an ast tree to text or html.
 """
 
-from luaparser.astnodes import *
-from luaparser.utils.visitor import *
+from gluaparser.astnodes import *
+from gluaparser.utils.visitor import *
 from enum import Enum
 import xml.etree.cElementTree as ElementTree
 from xml.dom import minidom

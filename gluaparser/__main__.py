@@ -1,8 +1,8 @@
 import sys
 from optparse import OptionParser, OptionGroup
-import luaparser
-from luaparser import ast
-from luaparser.builder import SyntaxException
+import gluaparser
+from gluaparser import ast
+from gluaparser.builder import SyntaxException
 
 
 def abort(msg):

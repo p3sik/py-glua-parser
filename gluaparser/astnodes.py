@@ -273,6 +273,15 @@ class Break(Statement):
         super(Break, self).__init__('Break')
 
 
+class Continue(Statement):
+	"""Define the continue lua statement.
+	
+	"""
+	
+	def __init__(self):
+		super(Continue, self).__init__("Continue")
+
+
 class Return(Statement):
     """Define the Lua return statement.
 

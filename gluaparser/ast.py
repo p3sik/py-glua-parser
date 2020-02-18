@@ -1,9 +1,9 @@
 from antlr4 import InputStream, CommonTokenStream
-from luaparser.parser.LuaLexer import LuaLexer
-from luaparser.astnodes import *
-from luaparser import printers
-from luaparser.builder import Builder
-from luaparser.utils.visitor import *
+from gluaparser.parser.LuaLexer import LuaLexer
+from gluaparser.astnodes import *
+from gluaparser import printers
+from gluaparser.builder import Builder
+from gluaparser.utils.visitor import *
 from antlr4.error.ErrorListener import ErrorListener
 import json
 from typing import Generator
@@ -202,6 +202,10 @@ class WalkVisitor:
         self._nodes.append(node)
 
     @visitor(Break)
+    def visit(self, node):
+        self._nodes.append(node)
+    
+    @visitor(Continue)
     def visit(self, node):
         self._nodes.append(node)
 

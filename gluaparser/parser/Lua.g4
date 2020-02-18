@@ -243,6 +243,7 @@ name_list
 
 AND       : 'and' | '&&';
 BREAK     : 'break';
+CONTINUE : 'continue';
 DO        : 'do';
 ELSE      : 'else';
 ELSEIF    : 'elseif';
@@ -255,7 +256,7 @@ IF        : 'if';
 IN        : 'in';
 LOCAL     : 'local';
 NIL       : 'nil';
-NOT       : 'not';
+NOT       : 'not' | '!';
 OR        : 'or' | '||';
 REPEAT    : 'repeat';
 RETURN    : 'return';
@@ -263,7 +264,6 @@ THEN      : 'then';
 TRUE      : 'true';
 UNTIL     : 'until';
 WHILE     : 'while';
-CONTINUE  : 'continue';
 ADD       : '+';
 MINUS     : '-';
 MULT      : '*';
@@ -295,7 +295,7 @@ COMMA     : ',';
 VARARGS   : '...';
 CONCAT    : '..';
 DOT       : '.';
-SEMCOL    : ';';
+SEMCOL     : ';';
 
 NAME
   : (Letter | '_') (Letter | '_' | Digit)*
@@ -314,11 +314,10 @@ STRING
 
 //////////////////////////////// lexer rules to hide ////////////////////////////////
 COMMENT
-    :
-     (
-     '--[' NESTED_STR ']'
-     | '/*' .*? '*/'
-     ) -> channel(HIDDEN)
+    : (
+      '--[' NESTED_STR ']'
+      | '/*' .*? '*/'
+      ) -> channel(HIDDEN)
     ;
 
 LINE_COMMENT

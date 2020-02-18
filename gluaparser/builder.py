@@ -1,6 +1,6 @@
 from antlr4 import InputStream, CommonTokenStream
-from luaparser.parser.LuaLexer import LuaLexer
-from luaparser.astnodes import *
+from gluaparser.parser.LuaLexer import LuaLexer
+from gluaparser.astnodes import *
 from enum import Enum
 import ast
 import re
@@ -33,31 +33,31 @@ class Expr(Enum):
 class Tokens:
     AND = 1
     BREAK = 2
-    DO = 3
-    ELSETOK = 4
-    ELSEIF = 5
-    END = 6
-    FALSE = 7
-    FOR = 8
-    FUNCTION = 9
-    GOTO = 10
-    IFTOK = 11
-    IN = 12
-    LOCAL = 13
-    NIL = 14
-    NOT = 15
-    OR = 16
-    REPEAT = 17
-    RETURN = 18
-    THEN = 19
-    TRUE = 20
-    UNTIL = 21
-    WHILE = 22
-    ADD = 23
-    MINUS = 24
-    MULT = 25
-    DIV = 26
-    FLOOR = 27
+    CONTINUE = 3
+    DO = 4
+    ELSETOK = 5
+    ELSEIF = 6
+    END = 7
+    FALSE = 8
+    FOR = 9
+    FUNCTION = 10
+    GOTO = 11
+    IFTOK = 12
+    IN = 13
+    LOCAL = 14
+    NIL = 15
+    NOT = 16
+    OR = 17
+    REPEAT = 18
+    RETURN = 19
+    THEN = 20
+    TRUE = 21
+    UNTIL = 22
+    WHILE = 23
+    ADD = 24
+    MINUS = 25
+    MULT = 26
+    DIV = 27
     MOD = 28
     POW = 29
     LENGTH = 30
@@ -98,12 +98,12 @@ class Tokens:
 
 
 LITERAL_NAMES = ["<INVALID>",
-                 "'and'", "'break'", "'do'", "'else'", "'elseif'", "'end'", "'false'",
+                 "'and'", "'break'", "'continue'", "'do'", "'else'", "'elseif'", "'end'", "'false'",
                  "'for'", "'function'", "'goto'", "'if'", "'in'", "'local'",
                  "'nil'", "'not'", "'or'", "'repeat'", "'return'", "'then'",
-                 "'true'", "'until'", "'while'", "'+'", "'-'", "'*'", "'/'",
-                 "'//'", "'%'", "'^'", "'#'", "'=='", "'~='", "'<='", "'>='",
-                 "'<'", "'>'", "'='", "'&'", "'|'", "'~'", "'>>'", "'<<'", "'('",
+                 "'true'", "'until'", "'while'", "'&&'", "'||'", "'+'", "'-'", "'*'", "'/'",
+                 "'%'", "'^'", "'#'", "'=='", "'~='", "'!='", "'<='", "'>='", "'<'",
+                 "'>'", "'='", "'&'", "'|'", "'~'", "'>>'", "'<<'", "'('",
                  "')'", "'{'", "'}'", "'['", "']'", "'::'", "':'", "','", "'...'",
                  "'..'", "'.'", "';'", "NAME", "NUMBER", "STRING", "COMMENT", "LINE_COMMENT",
                  "SPACE", "NEWLINE", "SHEBANG", "LONG_BRACKET"]
@@ -401,6 +401,9 @@ class Builder:
         if self.next_is(Tokens.BREAK) and self.next_is_rc(Tokens.BREAK):
             self.handle_hidden_right()
             return Break()
+        if self.next_is(Tokens.CONTINUE) and self.next_is_rc(Tokens.CONTINUE):
+            self.handle_hidden_right()
+            return Continue()
         if self.next_is(Tokens.SEMCOL) and self.next_is_rc(Tokens.SEMCOL):
             self.handle_hidden_right()
             return SemiColon()
@@ -1040,7 +1043,7 @@ class Builder:
                 if self.next_in_rc([Tokens.MULT,
                                     Tokens.DIV,
                                     Tokens.MOD,
-                                    Tokens.FLOOR]):
+                                    ]):
                     op = self.type
                     right = self.parse_bitwise_expr()
                     if right:
@@ -1051,8 +1054,6 @@ class Builder:
                             left = FloatDivOp(left, right)
                         elif op == Tokens.MOD:
                             left = ModOp(left, right)
-                        elif op == Tokens.FLOOR:
-                            left = FloorDivOp(left, right)
                     else:
                         self.failure()
                         return self.failure()
