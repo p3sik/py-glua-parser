@@ -153,7 +153,7 @@ add_expr
   ;
 
 mult_expr
-  : bitwise_expr ((MULT | DIV | MOD | FLOOR) bitwise_expr)*
+  : bitwise_expr ((MULT | DIV | MOD) bitwise_expr)*
   ;
 
 bitwise_expr
@@ -241,7 +241,7 @@ name_list
 
 //////////////////////////////// lexer rules ////////////////////////////////
 
-AND       : 'and';
+AND       : 'and' | '&&';
 BREAK     : 'break';
 DO        : 'do';
 ELSE      : 'else';
@@ -256,23 +256,23 @@ IN        : 'in';
 LOCAL     : 'local';
 NIL       : 'nil';
 NOT       : 'not';
-OR        : 'or';
+OR        : 'or' | '||';
 REPEAT    : 'repeat';
 RETURN    : 'return';
 THEN      : 'then';
 TRUE      : 'true';
 UNTIL     : 'until';
 WHILE     : 'while';
+CONTINUE : 'continue';
 ADD       : '+';
 MINUS     : '-';
 MULT      : '*';
 DIV       : '/';
-FLOOR     : '//';
 MOD       : '%';
 POW       : '^';
 LENGTH    : '#';
 EQ        : '==';
-NEQ       : '~=';
+NEQ       : '~=' | '!=';
 LTEQ      : '<=';
 GTEQ      : '>=';
 LT        : '<';
@@ -314,11 +314,14 @@ STRING
 
 //////////////////////////////// lexer rules to hide ////////////////////////////////
 COMMENT
-    : '--[' NESTED_STR ']' -> channel(HIDDEN)
+    : (
+       '--[' NESTED_STR ']'
+      | '/*' .*? '*/'
+      ) -> channel(HIDDEN)
     ;
 
 LINE_COMMENT
-    : '--'
+    : ('--' | '//')
     (                                               // --
     | '[' '='*                                      // --[==
     | '[' '='* ~('='|'['|'\r'|'\n') ~('\r'|'\n')*   // --[==AA
