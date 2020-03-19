@@ -1199,6 +1199,7 @@ class Builder:
     @staticmethod
     def parse_lua_str(lua_str) -> String:
         p = re.compile(r'^\[=+\[(.*)\]=+\]')  # nested quote pattern
+        between_brackets = False
         # try remove double quote:
         if lua_str.startswith('"') and lua_str.endswith('"'):
             lua_str = lua_str[1:-1]
@@ -1208,10 +1209,13 @@ class Builder:
         # try remove double square bracket:
         elif lua_str.startswith("[[") and lua_str.endswith("]]"):
             lua_str = lua_str[2:-2]
+            between_brackets = True
         # nested quote
         elif p.match(lua_str):
             lua_str = p.search(lua_str).group(1)
-        return String(lua_str)
+            between_brackets = True
+            
+        return String(lua_str, between_brackets)
 
     def parse_function_literal(self) -> AnonymousFunction or bool:
         self.save()

@@ -473,11 +473,13 @@ class String(Expression):
 
     Attributes:
         s (`string`): String value.
+        between_brackets (`bool`): a.
     """
 
-    def __init__(self, s: str):
+    def __init__(self, s: str, square_brackets: bool=False):
         super(String, self).__init__('String')
         self.s: str = s
+        self.between_brackets: bool = between_brackets
 
 
 class Field(Expression):
